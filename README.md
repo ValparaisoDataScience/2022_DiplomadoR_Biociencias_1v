@@ -18,15 +18,21 @@ Investigadora post-doctoral de la Pontificia Universidad Católica de Valparaís
 # CONTENIDOS DEL CURSO
 
 ## UNIDAD 1. INVESTIGACIÓN REPRODUCIBLE Y ANÁLISIS EXPLORATORIO DE DATOS. 
-Subtópico 1.1.- Investigación reproducible con R, Rstudio, Rmarkdwon.  
-Subtópico 1.2.- Variables aleatorias y distribuciones de probabilidad.  
-Subtópico 1.3.- Análisis exploratorio de datos.  
+Subtópico 1.1.- Investigación reproducible con R, Rstudio, Rmarkdwon y GitHub.
+Subtópico 1.2.- Variables aleatorias y distribuciones de probabilidad.
+Subtópico 1.3.- Análisis exploratorio de datos.
 
 ## UNIDAD 2. INFERENCIA ESTADÍSTICA. 
-Subtópico 2.1.- Pruebas de contraste de hipótesis paramétrica.  
-Subtópico 2.2.- Pruebas de contraste de hipótesis no paramétrica.  
+Subtópico 2.1.- Inferencia estadística y formulación de hipótesis.
+Subtópico 2.2.- Pruebas de contraste de hipótesis.
+Subtópico 2.3.- Anova, pruebas a posteriori.
+Subtópico 2.4.- Evaluación de supuestos de las pruebas paramétricas.
+Subtópico 2.6.- Tablas de contingencia.
+Subtópico 2.6.- Pruebas de Wilcoxon y Kruskal – Wallis.
   
 ## UNIDAD 3. MODELOS LINEALES Y ANÁLISIS DE SUPERVIVENCIA. 
-Subtópico 3.1.- Modelos lineales.  
-Subtópico 3.2.- Modelos lineales generalizados.  
-Subtópico 3.3.- Análisis de supervivencia.  
+Subtópico 3.1.- Modelos lineales.
+Subtópico 3.2.- Modelos lineales generalizados.
+Subtópico 3.3.- Modelos mixtos.
+Subtópico 3.4.- Análisis de supervivencia.
+Subtópico 3.5.- Técnicas de Análisis Multivariante.
