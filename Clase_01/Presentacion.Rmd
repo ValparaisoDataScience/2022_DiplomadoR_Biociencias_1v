@@ -1,0 +1,146 @@
+---
+title: "CLASE 01 - PRESENTACIÓN"
+subtitle: 'Diplomado en Análisis de Datos con R e Investigación reproducible para Biociencias.'
+author: Dr. José Gallardo Matus | https://genomics.pucv.cl/
+institute: Pontificia Universidad Católica de Valparaíso 
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  beamer_presentation:
+    theme: "Malmoe"
+    colortheme: "beaver"
+    fonttheme: "structurebold"
+    includes:
+      in_header: mystyle.tex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# PLAN DE LA CLASE INAUGURAL
+
+- Palabras de bienvenida.
+
+- Presentación de los participantes.
+
+- Revisión programa del Diplomado.
+
+- Lectura condiciones de operación AEA.
+
+- Habilitación recursos de comunicación y aprendizaje.
+
+
+# PALABRAS DE BIENVENIDA
+
+```{r, echo=FALSE, out.width = '80%' }
+knitr::include_graphics("Welcome.png")
+```
+
+# PROFESORES Y AYUDANTES DIPLOMADO
+
+**Dr. José Gallardo**  
+Profesor de genética y genómica aplicada  
+Doctor en Ciencias    
+Profesor adjunto PUCV  
+
+**Dr. María Angélica Rueda**  
+Profesora de modelamiento predictivo   
+Doctora en Ciencias Agropecuarias  
+Investigadora postdoctoral PUCV
+
+**Dr(c) Jaqueline Flores**  
+Coordinadora postulación y matrículas.
+
+**Mag. Paz Caballero**  
+Ayudante del diplomado.
+
+# PRESENTACIÓN DE LOS PARTICIPANTES
+
+```{r, echo=FALSE, out.width = '70%' }
+knitr::include_graphics("Students.png")
+```
+
+# OBJETIVOS DEL DIPLOMADO
+
+Al finalizar el Diplomado los alumnos serán capaces de:
+
+1.	Realizar análisis exploratorio de datos.  
+2.	Aplicar modelos básicos de inferencia estadística paramétrica y no paramétrica.  
+3.	Seleccionar y aplicar modelos lineales, no lineales y multivariados de modelamiento predictivo.  
+4.	Compartir y presentar resultados de análisis de datos de manera moderna y profesional mediante reportes dinámicos generados con el software Rmarkdown.  
+5.	Trabajar bajo el paradigma de la investigación reproducible utilizando de forma autónoma el software de control de versiones GitHub.  
+
+# CONTENIDOS
+
+- **UNIDAD 1. Investigación reproducible y análisis exploratorio de datos.**  
+*Palabras clave: R, Rstudio, Rmarkdown, Github, variables aleatorias, distribución de probabilidad, análisis exploratorio de datos.*  
+
+
+- **UNIDAD 2. Pruebas de contraste de hipótesis paramétricas y no paramétricas.**  
+*Palabras clave: Parámetro, estadístico, correlación, permutación, combinación, inferencia estadística, contraste de hipótesis.*
+
+- **UNIDAD 3. Modelos lineales, análisis de supervivencia y multivariante. ** 
+*Palabras clave: Regresión lineal, regresión lineal múltiple, regresión logística, análisis de supervivencia, análisis de cluster, análisis de componentes principales.*
+
+
+# EVALUACIÓN DEL DIPLOMADO
+
+- La evaluación del diplomado consiste en el desarrollo de un proyecto personal de análisis de datos de acuicultura con R. 
+
+- Se dará énfasis a que los alumnos resuelvan un problema usando datos de su propio trabajo o investigación. 
+
+- El trabajo se desarrolla en dos etapas, la primera pondera un 40% y la segunda un 60% de la nota final.
+
+# CONDICIONES DE APROBACIÓN DEL DIPLOMADO
+
+- **Nota mínima**: 4,0 en escala de 1-7 con 60% de exigencia.
+
+- **Asistencia a clases sincrónicas**: 80%. Esto es independiente de que las calificaciones parciales o totales sean mayores de 4,0.
+
+- **Plazo de entrega de reportes**: No entregar los reportes en los plazos establecidos para ello será calificado con la nota mínima (1,0).
+
+# REQUISITOS
+
+- **Título**: Título profesional o licenciatura. 
+
+- **Programación básica con R**: Deseable pero no es excluyente.   
+Alumnos sin experiencia previa deben considerar 4 horas de estudio adicional por semana para alcanzar nivel avanzada de los objetivos de aprendizaje.  
+
+- **Inglés**: Los softwares R, Rstudio, Rmarkdown, GitHub y todas las librerías de análisis estadístico que se usarán en el curso solo están disponibles en inglés. Alumnos sin competencias de lectura en inglés no deberían tomar el curso.  
+
+# CONDICIONES DE OPERACIÓN
+
+- **Nombre de la actividad de extensión académica:**  
+Diplomado Análisis de datos con R e investigación reproducible
+para Biociencias.
+
+- **Resolución:**  
+105/2022.
+
+- **Fecha de ejecución:**  
+INICIO: 29/08/2022
+TÉRMINO: 30/10/2022  
+
+- **Consultas, sugerencias y reclamos del curso:**
+<genomica.aplicada@pucv.cl>  
+<oct@pucv.cl>  
+
+# RECURSOS DE APRENDIZAJE Y COMUNICACIÓN
+
+- **Repositorio**: Todo el material disponible en Google Drive.
+
+- **Material docente**: Diapositivas de clases, videos, guías de aprendizaje y códigos de programación para el análisis de datos con R.
+
+- **SLACK**: Foro de comunicación y preguntas.
+
+- **R**: Acceso a versión open source en la nube.
+
+- **Rstudio**: Acceso a espacio de trabajo Rstudio.cloud por 4 meses.
+
+- **Github**: Acceso a versión gratuita.
+
+# DUDAS O CONSULTAS
+
+```{r, echo=FALSE, out.width = '50%' }
+knitr::include_graphics("Questions.png")
+```

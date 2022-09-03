@@ -1,0 +1,309 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usetheme[]{Malmoe}
+\usecolortheme{beaver}
+\usefonttheme{structurebold}
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={CLASE 01 - PRESENTACIÓN DEL DIPLOMADO},
+  pdfauthor={Dr.~José Gallardo Matus \textbar{} https://genomics.pucv.cl/},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\newcommand{\columnsbegin}{\begin{columns}}
+\newcommand{\columnsend}{\end{columns}}
+
+\title{CLASE 01 - PRESENTACIÓN DEL DIPLOMADO}
+\subtitle{Diplomado en Análisis de Datos con R e Investigación reproducible para
+Biociencias.}
+\author{Dr.~José Gallardo Matus \textbar{} \url{https://genomics.pucv.cl/}}
+\date{29 August 2022}
+\institute{Pontificia Universidad Católica de Valparaíso}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}{PLAN DE LA CLASE INAUGURAL}
+\protect\hypertarget{plan-de-la-clase-inaugural}{}
+
+\begin{itemize}
+\item
+  Palabras de bienvenida.
+\item
+  Presentación de los participantes.
+\item
+  Revisión programa del Diplomado.
+\item
+  Lectura condiciones de operación AEA.
+\item
+  Habilitación recursos de comunicación y aprendizaje.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{PALABRAS DE BIENVENIDA}
+\protect\hypertarget{palabras-de-bienvenida}{}
+
+\textbf{Dr.~José Gallardo Matus}\\
+Director del Diplomado.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Excelencia académica}\\
+  PUCV Acreditada por 7 años, máximo a nivel nacional. Doctorado en
+  Biotecnología acreditado por 5 años: 85 graduados.\\
+  Vinculación permanente con la industria.\\
+  Recursos de enseñanza y aprendizaje de nivel mundial.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{PROFESORES Y AYUDANTES DIPLOMADO}
+\protect\hypertarget{profesores-y-ayudantes-diplomado}{}
+
+\textbf{Dr.~José Gallardo}\\
+Profesor de genética y genómica aplicada\\
+Doctor en Ciencias\\
+Profesor adjunto PUCV
+
+\textbf{Dr.~María Angélica Rueda}\\
+Profesora de modelamiento predictivo\\
+Doctora en Ciencias Agropecuarias\\
+Investigadora postdoctoral PUCV
+
+\textbf{Dr(c) Jaqueline Flores}\\
+Coordinadora postulación y matrículas.
+
+\textbf{Mag. Paz Caballero}\\
+Ayudante del diplomado.
+
+\end{frame}
+
+\begin{frame}{PRESENTACIÓN DE LOS PARTICIPANTES}
+\protect\hypertarget{presentaciuxf3n-de-los-participantes}{}
+
+\includegraphics[width=1\linewidth]{Welcome}
+
+\end{frame}
+
+\begin{frame}{OBJETIVOS DEL DIPLOMADO}
+\protect\hypertarget{objetivos-del-diplomado}{}
+
+Al finalizar el Diplomado los alumnos serán capaces de:
+
+• Realizar análisis exploratorio de datos.\\
+• Aplicar modelos básicos de inferencia estadística paramétrica y no
+paramétrica.\\
+• Seleccionar y aplicar modelos lineales, no lineales y multivariados de
+modelamiento predictivo.\\
+• Compartir y presentar resultados de análisis de datos de manera
+moderna y profesional mediante reportes dinámicos generados con el
+software Rmarkdown.\\
+• Trabajar bajo el paradigma de la investigación reproducible utilizando
+de forma autónoma el software de control de versiones GitHub.
+
+\end{frame}
+
+\begin{frame}{CONTENIDOS}
+\protect\hypertarget{contenidos}{}
+
+\begin{itemize}
+\item
+  \textbf{UNIDAD 1. Investigación reproducible y análisis exploratorio
+  de datos.}\\
+  \emph{Palabras clave: R, Rstudio, Rmarkdown, Github, variables
+  aleatorias, distribución de probabilidad, análisis exploratorio de
+  datos.}
+\item
+  \textbf{UNIDAD 2. Pruebas de contraste de hipótesis paramétricas y no
+  paramétricas.}\\
+  \emph{Palabras clave: Parámetro, estadístico, correlación,
+  permutación, combinación, inferencia estadística, contraste de
+  hipótesis.}
+\item
+  \textbf{UNIDAD 3. Modelos lineales, análisis de supervivencia y
+  multivariante. } \emph{Palabras clave: Regresión lineal, regresión
+  lineal múltiple, regresión logística, análisis de supervivencia,
+  análisis de cluster, análisis de componentes principales.}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{EVALUACIÓN DEL DIPLOMADO}
+\protect\hypertarget{evaluaciuxf3n-del-diplomado}{}
+
+\begin{itemize}
+\item
+  La evaluación del diplomado consiste en el desarrollo de un proyecto
+  personal de análisis de datos de acuicultura con R.
+\item
+  Se dará énfasis a que los alumnos resuelvan un problema usando datos
+  de su propio trabajo o investigación.
+\item
+  El trabajo se desarrolla en dos etapas, la primera pondera un 40\% y
+  la segunda un 60\% de la nota final.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{CONDICIONES DE APROBACIÓN DEL DIPLOMADO}
+\protect\hypertarget{condiciones-de-aprobaciuxf3n-del-diplomado}{}
+
+\begin{itemize}
+\item
+  \textbf{Nota mínima}: 4,0 en escala de 1-7 con 60\% de exigencia.
+\item
+  \textbf{Asistencia a clases sincrónicas}: 80\%. Esto es independiente
+  de que las calificaciones parciales o totales sean mayores de 4,0.
+\item
+  \textbf{Plazo de entrega de reportes}: No entregar los reportes en los
+  plazos establecidos para ello será calificado con la nota mínima
+  (1,0).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{REQUISITOS}
+\protect\hypertarget{requisitos}{}
+
+\begin{itemize}
+\item
+  \textbf{Título}: Título profesional o licenciatura.
+\item
+  \textbf{Programación básica con R}: Deseable pero no es excluyente.\\
+  Alumnos sin experiencia previa deben considerar 4 horas de estudio
+  adicional por semana para alcanzar nivel avanzada de los objetivos de
+  aprendizaje.
+\item
+  \textbf{Inglés}: Los softwares R, Rstudio, Rmarkdown, GitHub y todas
+  las librerías de análisis estadístico que se usarán en el curso solo
+  están disponibles en inglés. Alumnos sin competencias de lectura en
+  inglés no deberían tomar el curso.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{CONDICIONES DE OPERACIÓN}
+\protect\hypertarget{condiciones-de-operaciuxf3n}{}
+
+\begin{itemize}
+\item
+  \textbf{Nombre de la actividad de extensión académica:}\\
+  Diplomado Análisis de datos con R e investigación reproducible para
+  Biociencias.
+\item
+  \textbf{Resolución:}\\
+  105/2022.
+\item
+  \textbf{Fecha de ejecución:}\\
+  INICIO: 29/08/2022 TÉRMINO: 30/10/2022
+\item
+  \textbf{Consultas, sugerencias y reclamos del curso:}
+  \href{mailto:genomica.aplicada@pucv.cl}{\nolinkurl{genomica.aplicada@pucv.cl}}\\
+  \href{mailto:oct@pucv.cl}{\nolinkurl{oct@pucv.cl}}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{RECURSOS DE APRENDIZAJE Y COMUNICACIÓN}
+\protect\hypertarget{recursos-de-aprendizaje-y-comunicaciuxf3n}{}
+
+\begin{itemize}
+\item
+  \textbf{Repositorio}: Todo el material disponible en Google Drive.
+\item
+  \textbf{Material docente}: Diapositivas de clases, videos, guías de
+  aprendizaje y códigos de programación para el análisis de datos con R.
+\item
+  \textbf{SLACK}: Foro de comunicación y preguntas.
+\item
+  \textbf{R}: Acceso a versión open source en la nube.
+\item
+  \textbf{Rstudio}: Acceso a espacio de trabajo Rstudio.cloud por 4
+  meses.
+\item
+  \textbf{Github}: Acceso a versión gratuita.
+\end{itemize}
+
+\end{frame}
+
+\end{document}
