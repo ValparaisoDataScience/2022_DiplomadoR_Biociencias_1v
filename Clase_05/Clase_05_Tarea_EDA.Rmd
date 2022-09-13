@@ -249,7 +249,7 @@ ggplot(mouse, aes(x=feed, y=weight, fill=sex)) +
   labs(y="weight")
 ```
 
-**c)** Realice ahora una gráfica de interacción y una gráfica de tamaño de los efectos de la variable *weight* usando las funciones **interaction.plot()** y **plot.design()**. Incluya *feed* y *sex* como factores.
+**c)** Realice ahora una gráfica de interacción y una gráfica de tamaño de los efectos de la variable *weight* usando las funcines **interaction.plot()** y **plot.design()**. Incluya *feed* y *sex* como factores.
 
 La forma correcta de escribir el modelo de interacción es el siguiente:
 
