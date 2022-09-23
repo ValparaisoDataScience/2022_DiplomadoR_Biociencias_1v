@@ -1,5 +1,5 @@
 ---
-title: "CLASE 02 - VARIABLES ALEATORIAS CUANTITATIVAS"
+title: "CLASE 03 - VARIABLES ALEATORIAS CUANTITATIVAS"
 subtitle: 'Diplomado en Análisis de Datos con R e Investigación reproducible para Biociencias.'
 author: Dr. José Gallardo Matus | https://genomics.pucv.cl/
 institute: Pontificia Universidad Católica de Valparaíso 
@@ -205,7 +205,7 @@ knitr::include_graphics("Errores.png")
 
 Asuntos importantes:   
 
-1. Prefiera archivos sin formato commo **txt, csv o tsv**. Si tiene un excel se recomienda transformarlo, particularmente cuando trabaje con miles de filas o columnas.
+1. Prefiera archivos sin formato como **txt, csv o tsv**. Si tiene un excel se recomienda transformarlo, particularmente cuando trabaje con miles de filas o columnas.
 
 2. Ojo con separador de columnas, decimales y valores perdidos.
 
