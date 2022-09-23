@@ -161,7 +161,7 @@ Finalmente imprima diferentes versiones de su reporte (pdf, word, html) con el b
 Guarde el objeto BOD como un objeto .rds. Use la función **saveRDS()**
 
 ```{r, echo=TRUE}
-saveRDS(BOD,"BOD.rds" )
+saveRDS(BOD,"BOD.rds")
 ```
 
 ### **Ejercicio 12.** **Cargar archivo .rds**
