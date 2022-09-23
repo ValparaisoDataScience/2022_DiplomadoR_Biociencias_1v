@@ -1,0 +1,45 @@
+---
+title: "barplot"
+author: "Jose Gallardo"
+date: "9/6/2022"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+datos_all <- read_excel("datos_all.xlsx")
+datos_all$Sexo <- as.factor(datos_all$Sexo)
+datos_all$Cataratas <- as.factor(datos_all$Cataratas)
+```
+
+
+## **DIAGRAMAS DE BARRAS**
+
+```{r}
+My_Theme = theme(
+  axis.title.x = element_text(size = 18),
+  axis.text.x = element_text(size = 18),
+  axis.title.y = element_text(size = 18),
+  axis.text.y = element_text(size = 18))
+```
+
+```{r, echo=TRUE, out.width='80%',fig.align='center'}
+g <-ggplot(datos_all, aes(x = Cataratas)) + 
+geom_bar(fill=c("darkolivegreen", "darkolivegreen4",
+                "darkolivegreen2"))+ ylim(0,60)
+g+My_Theme
+
+```
+
+## **DIAGRAMA DE BARRAS APILADAS**
+
+```{r, echo=TRUE, out.width='80%',fig.align='center'}
+p <- ggplot(datos_all, aes(x = Sexo, fill = Cataratas)) + 
+geom_bar(position = 'fill', stat = 'count',color = "black")+
+scale_fill_brewer()
+
+p+My_Theme
+```

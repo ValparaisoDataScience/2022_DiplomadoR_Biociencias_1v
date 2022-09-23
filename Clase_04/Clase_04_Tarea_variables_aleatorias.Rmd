@@ -1,6 +1,6 @@
 ---
-title: "Guía de trabajo Variables Aleatorias"
-subtitle: 'DBT 845 - Investigación reproducible y análisis de datos biotecnológicos con R'
+title: "Clase 04 - Tarea variables aleatorias"
+subtitle: 'Diplomado R para Biociencias'
 author:
  name: Dr. José A. Gallardo Matus y Dra. María Angélica Rueda
  affiliation: Pontificia Universidad Católica de Valparaíso
@@ -135,17 +135,17 @@ Los objetivos de aprendizaje de esta guía son:
 Elabore un archivo o file con extensión **.R** usando la barra de herramientas de **Rstudio**. Selecciona **File \> New file \> R script**. Utilice el siguiente ejemplo para completar la información de **metadatos** del script.
 
     # ----------------------------------------------------------  
-    # Clase 02 - Script Variables Aleatorias.   
+    # Clase 04 - Script Tarea Variables Aleatorias.   
     # Su nombre. 
     # Fecha de hoy. 
-    # DBT 845 - Investigación reproducible y análisis de datos biotecnológicos con R. 
+    # Diplomado R para Biociencias. 
     # ----------------------------------------------------------  
 
-Luego, guarde inmediatamente su script como **script_1_nombre_apellido.R**.
+Luego, guarde inmediatamente su script como **script_tarea_nombre_apellido.R**.
 
-### **Ejercicio 2.** **Configuración de librerías**
+### **Ejercicio 2.** **Configuración de paquetes**
 
-Debajo del **metadatos** habilite las siguientes librerías la función **library()**: **readr**, **MASS** **Rlab**. Note que las librerías **base**, **stats**, **utils** y **graphics**.
+Debajo del **metadatos** habilite los siguientes paquetes con la función **library()**: **readr**, **MASS** **Rlab**. Note que los paquetes **base**, **stats**, **utils** y **graphics** vienen instalados por defecto.
 
 ```{r setup, include=TRUE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -160,7 +160,7 @@ library(MASS)
 El set de datos **Data.csv** contiene información de tamaño (Weight) de 200 ratones de laboratorio, los cuales se clasificaron según su sexo en **male** o **female**.
 
 Cree un objeto llamado **mouse** e importe el set de datos **Data.csv** usando la función ***
-read_delim()*** de la librería **readr**. Explore el set de datos algunas funciones de la librería **{utils}** (**head()**, **tail**, **str())** y de la librería **{base}** (**summary**).
+read_delim()*** del paquete **readr**. Explore el set de datos algunas funciones del paquete **{utils}** (**head()**, **tail**, **str())** y del paquete **{base}** (**summary**).
 
 ```{r}
 mouse <- read.csv("Data.csv", header = TRUE, sep = ";", dec = ",", na.strings=c(""))
@@ -202,10 +202,10 @@ boxplot(mouse$weight, col="light blue", main = "Boxplot Weight", ylab = "Weight 
 Calcule las siguientes métricas del set de datos: promedio, desviación estándar, rango y cuantiles usando las funciones: **mean()**, **sd()**, **range()** y **quantile()**.
 
 ```{r}
-mean(mouse$Weight)
-sd(mouse$Weight)
-range(mouse$Weight)
-quantile(mouse$Weight)
+mean(mouse$weight)
+sd(mouse$weight)
+range(mouse$weight)
+quantile(mouse$weight)
 ```
 
 ### **Ejercicio 7.** **Función de densidad**
@@ -295,7 +295,7 @@ boxplot(mouse$weight ~ mouse$sex, col="light blue", main = "Weight: male v/s fem
 
 ### **Ejercicio 11.** **Exportación de productos biotecnológicos.**
 
-Una empresa exportadora de productos biotecnológicos implementa un sistema de inspección visual de los productos, clasificándo cada uno como defectuoso **(D)** y no defectuoso **(ND)**.
+Una empresa exportadora de productos biotecnológicos implementa un sistema de inspección visual de los productos, clasificando cada uno como defectuoso **(D)** y no defectuoso **(ND)**.
 
 **a).** ¿Qué tipo de variable y distribución mejor representaría a la clasificación de un producto como defectuoso o no defectuoso?
 
@@ -438,15 +438,15 @@ plot(x=rvpm, y=pvpm, main="Prob. acumul. rvpm", col="red", ylim=c(0,1))
 
 ### **Ejercicio 13. Mutaciones en levaduras.**
 
-Diversas investigaciones en lavaduras han determinado la tasa de mutación espontanea, un parámetro importante que alimenta la evolución y la diversidad genética entre entre especies. En este ejercicio simularemos el número de mutaciones espontaneas en *Schizosaccharomyces pombe* tratando de replicar los resultados observados por [Behringer and Hall, 2016](https://academic.oup.com/g3journal/article/6/1/149/6027351) en la figura 3.
+Diversas investigaciones en levaduras han determinado la tasa de mutación espontánea, un parámetro importante que alimenta la evolución y la diversidad genética entre entre especies. En este ejercicio simularemos el número de mutaciones espontáneas en *Schizosaccharomyces pombe* tratando de replicar los resultados observados por [Behringer and Hall, 2016](https://academic.oup.com/g3journal/article/6/1/149/6027351) en la figura 3.
 
-**a)** Cree un objeto denominado levadura y genere una muestra aletoria de mutaciones en 326 lineas de levadura usando la función **rnegbin(m, mu, theta)**. Considere los siguientes argumentos: n=326, mu = 4.13, thetha = 30. Explore los datos con las funciones **head()**, y **summary()**.
+**a)** Cree un objeto denominado levadura y genere una muestra aleatoria de mutaciones en 326 líneas de levadura usando la función **rnegbin(m, mu, theta)**. Considere los siguientes argumentos: n=326, mu = 4.13, thetha = 30. Explore los datos con las funciones **head()**, y **summary()**.
 
 ```{r}
 # Generar una muestra desde la población en estudio
 set.seed(123)
-# n = 1000 acepas
-# mu = 4 (mutaciones por cepa)
+# n = 326 cepas
+# mu = 4.13 (mutaciones por cepa)
 # theta = 30 (número arbitrario para estimar la varianza)
 levadura <- rnegbin (326, 4.13, 30)
 head(levadura, 20)
@@ -454,8 +454,15 @@ summary(levadura)
 
 ```
 
-**b)** Usando la función **hist()** y el argumento *probability = TRUE* replique la siguiente figura para observar la densidad del número de mutaciones espontanea.
+**b)** Usando la función **barplot()** replique la siguiente figura para observar el número de mutaciones espontanea de las levaduras.
 
 ```{r}
-hist(levadura, probability = TRUE, col="lightblue", main = "Densidad del número de mutaciones.", xlab = "Número de mutaciones espontáneas en levadura.")
+mi_tabla <- table(levadura)
+
+barplot(mi_tabla,   # Datos
+        main = "Mutaciones espontáneas en levadura", # Título
+        xlab = "Número de mutaciones espontáneas en levadura.",# Etiqueta eje X
+        ylab = "Frecuencia",        # Etiqueta eje Y
+        border = "black",           # Color borde
+        col = c("darkblue"))
 ```

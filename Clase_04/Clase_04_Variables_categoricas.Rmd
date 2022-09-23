@@ -1,0 +1,140 @@
+---
+title: "CLASE 04 - VARIABLES ALEATORIAS CATEGÓRICAS"
+author: "Dra. Angélica Rueda Calderón"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  beamer_presentation:
+    theme: Malmoe
+    colortheme: beaver
+    fonttheme: structurebold
+    includes:
+      in_header: mystyle.tex
+  slidy_presentation: default
+subtitle: Diplomado R para Biociencias
+institute: Pontificia Universidad Católica de Valparaíso
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(MASS)
+library(psych)
+library(knitr)
+library(Rlab)
+library(ggplot2)
+library(readxl)
+```
+
+
+## **PLAN DE LA CLASE**
+
+1. **Introducción**
+
+- Clasificación de variables categóricas.
+
+- Observar variables categóricas a través de tablas de frecuencias y tablas de contingencia.
+
+- Gráficos para variables categóricas.
+
+2. **Práctica con R y Rstudio cloud**
+
+- Elaborar un script de R y simular datos.
+
+- Exportar datos.
+
+- Tarea variables aleatorias para consolidar aprendizaje conceptos y programación.
+
+## **CLASIFICACIÓN DE VARIABLES**
+
+```{r, echo=FALSE, out.width = '100%', fig.align='center'}
+knitr::include_graphics("TiposVariables.png")
+```
+
+## **VARIABLES CUALITATIVAS NOMINALES**
+
+
+Sus valores o niveles representan categorías que no obedecen a una clasificación intrínseca.
+
+* Tipo de variedades de maíz: blanco, amarillo, morado.
+
+* Tipos de árboles de una zona: pino, acacia, eucalipto y ficus
+
+* Sexo: Macho, hembra.
+
+* Estado de madurez: Maduro, Inmaduro.
+
+* Orientación de los vientos: Norte, Sur, Este, Oeste.
+
+## **VARIABLES CUALITATIVAS ORDINALES**
+
+Sus valores representan categorías con alguna clasificación intrínseca.
+
+* Color del salmón: Escala salmofan 20 al 34 representan rojo pálido a intenso.
+
+* Nivel de cataratas: Alto, Medio, Bajo.
+
+* Infestación por caligus: Centro de Alta Diseminación (CAD) = o > 3 hembras Ovígeras; Centro normal < 3 hembras ovígeras.    
+
+* Grado de ataque de una virosis vegetal que puede ser severo, moderado o leve, *e.g.*, Árboles de carozo (**Plum pox virus (PPV)**).
+
+## **OBSERVAR VARIABLES CATEGÓRICAS**
+
+- Se realiza usualmente mediante tablas de contingencia, tablas de frecuencia o diagramas de barras.
+
+```{r}
+datos_all <- read_excel("datos_all.xlsx")
+datos_all$Sexo <- as.factor(datos_all$Sexo)
+datos_all$Cataratas <- as.factor(datos_all$Cataratas)
+```
+
+- Ejemplo tablas de frecuencia.
+
+```{r, echo=TRUE}
+knitr::kable(table(datos_all$Cataratas), 
+             caption = "Tabla de frecuencia.")
+```
+
+
+## **TABLAS DE CONTINGENCIA**
+
+- Considera la información de dos variables categóricas en forma simultánea.
+
+- Ejemplo tablas de contingencia.
+```{r, echo=TRUE}
+knitr::kable(table(datos_all$Sexo, datos_all$Cataratas), 
+             caption = "Tabla de contingencia.")
+```
+
+## **DIAGRAMAS DE BARRAS**
+
+```{r}
+mi_tabla <- table(datos_all$Cataratas)
+```
+
+
+```{r, echo=TRUE, out.width='65%',fig.align='center'}
+
+barplot(mi_tabla,   # Datos
+        main = "Gráfico de barras", # Título
+        xlab = "Nivel de cataratas",# Etiqueta eje X
+        ylab = "Frecuencia",        # Etiqueta eje Y
+        border = "black",           # Color borde
+        col = c("darkgrey", "darkblue", "red"))
+```
+
+
+## **PRÁCTICA VARIABLES CATEGÓRICAS**
+
+**Tarea de programación con R en Rstudio.cloud**.
+
+```{r, echo=FALSE, out.width = '80%' }
+knitr::include_graphics("Run.png")
+```
+
+## **RESUMEN DE LA CLASE**
+
+- Tipos de variables categóricas: Norminales y ordinales.
+
+- Observar y graficar variables categóricas: Tablas de frecuencia, tablas de contingencia, gráficas de barra.
+
+- Exportar base de datos en formato .txt, .csv y .xlsx.
+
