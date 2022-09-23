@@ -7,6 +7,7 @@
 
 # habilitar paquetes ggplot2 y agridat
 library(ggplot2) # Paquete para hacer lindos gráficos en R
+library(agridat) # Paquete que contienen bases de datos de agricultura
 
 # Explore el objeto CO2 con el comando help
 help(CO2)
