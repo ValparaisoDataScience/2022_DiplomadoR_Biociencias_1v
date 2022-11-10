@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------------
-# Clase 14 - Script Anova, posteriores y supuestos
-# Dr. José Gallardo
+# Clase 14 - Script Anova y posteriores
+# Dr. José Gallardo y Dra. Angélica Rueda
 # 15 Octubre 2022
 # Diplomado Análisis de datos con R e investigación reproducible para Biociencias.
 # ---------------------------------------------------------------------------------
@@ -60,7 +60,6 @@ summary(res.aov)
 res.aov1 <- lm(`Dried weight` ~ -1 + Group, data = my_data)
 summary(res.aov1)
 
-
 # ESTUDIO DE CASO: GUINEA PIGS
 
 help(ToothGrowth)
@@ -89,5 +88,5 @@ res.aov2 <- aov(len ~ dose * supp,
 anova(res.aov2)
 
 # Imprime resultado en formato tabla.
-anova(res.aov2)%>% kable(caption = "Anova de dos vías.",
+anova(res.aov2)%>% kable(caption = "Anova de dos vías con interacción.",
                          digits=3)

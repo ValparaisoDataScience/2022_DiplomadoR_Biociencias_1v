@@ -159,7 +159,7 @@ grid.arrange(plot1, plot2, ncol=2, nrow =1)
 
 ```
 
-**d).** Incluya una tabla con los estimadores puntuales de los promedios y las varianzas de la variable Final_Weight_g para cada nivel del factor Cepa, incluya tambien el N muestral. Use el paquete dplyr y los comandos **group_by()**, **summarise()**.
+**d).** Incluya una tabla con los estimadores puntuales de los promedios y las varianzas de la variable Final_Weight_g para cada nivel del factor Cepa, incluya también el N muestral. Use el paquete dplyr y los comandos **group_by()**, **summarise()**.
 
 ```{r, echo=TRUE,message=FALSE, warning=FALSE, error=FALSE}
 # Promedio y varianza de la variable Final_Weight_g para la Cepa Spring. 
@@ -247,7 +247,7 @@ grid.arrange(plot3, plot4, ncol=2, nrow =1)
 
 ```
 
-**d).** Calcule los estimadores puntuales de los promedios y las varianzas de la variable indice_condicion_corporal para cada nivel del factor Tiempo_Dias. Incluya tambien el N muestral. Use el paquete dplyr y los comandos **group_by()**, **summarise()**.
+**d).** Calcule los estimadores puntuales de los promedios y las varianzas de la variable indice_condicion_corporal para cada nivel del factor Tiempo_Dias. Incluya también el N muestral. Use el paquete dplyr y los comandos **group_by()**, **summarise()**.
 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
@@ -291,7 +291,7 @@ Tuk_model2_anova1
 
 ### **Ejercicio 5.** **Anova a un criterio de clasificación y Prueba a Posteriori Tukey**
 
-En este estudio de caso trabajaremos con un set de datos de arroz (*rice*) del paquete de R **agriTutorial** (n=). 
+En este estudio de caso trabajaremos con un set de datos de arroz (*rice*) del paquete de R **agriTutorial** (n=135). 
 rice {agriTutorial}
 
 Las variables de estudio se describen a continuación: solo se consideraron algunas variables del set de datos para su descripción.
@@ -335,7 +335,7 @@ plot6  <- rice %>% ggplot(aes(x=management,y=yield, fill=management))+
 grid.arrange(plot5, plot6, ncol=2, nrow =1)
 ```
 
-**d).** Halle los estimadores puntuales de los promedios y las varianzas de la variable yield para cada nivel del factor management. Incluya tambien el **n** muestral. Use el paquete dplyr y los comandos **group_by()**, **summarise()**.
+**d).** Halle los estimadores puntuales de los promedios y las varianzas de la variable yield para cada nivel del factor management. Incluya también el **N** muestral. Use el paquete dplyr y los comandos **group_by()**, **summarise()**.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
 
@@ -418,7 +418,7 @@ knitr::kable(Tabla_3,caption ="Estimadores puntuales de media, varianza de rendi
 ```
 
 
-**d).** Realice el ajuste del siguiente modelo usando la función aov(), donde los parámetros son los siguientes: variable respuesta **yield** y como factores de clasificación management y v variety, como set de datos (data= rice). Llame al objeto model4_anova1. Utilice el simbolo ~ para relacionar la variable respuesta con los factores de clasificación y su interacción. **_Nota_**: Considere **management*variety** ya que está forma reducida en el modelo considera cada efecto principal y el efecto de interacción de forma simultánea. Aplique la función anova() al modelo ajustado.
+**d).** Realice el ajuste del siguiente modelo usando la función aov(), donde los parámetros son los siguientes: variable respuesta **yield** y como factores de clasificación management y variety, como set de datos (data= rice). Llame al objeto model4_anova1. Utilice el simbolo ~ para relacionar la variable respuesta con los factores de clasificación y su interacción. **_Nota_**: Considere management*variety; ya que está forma reducida en el modelo considera cada efecto principal y el efecto de interacción de forma simultánea. Aplique la función anova() al modelo ajustado.
 
 ```{r, echo=FALSE}
 model4_anova1 <- aov(yield ~ management*variety, data=rice)

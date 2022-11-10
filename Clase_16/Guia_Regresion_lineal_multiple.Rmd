@@ -1,6 +1,6 @@
 ---
 title: "Guía Regresión lineal múltiple"
-subtitle: 'DBT 845 - Investigación reproducible y análisis de datos biotecnológicos con R.'
+subtitle: 'Diplomado Análisis de datos con R e investigación reproducible para Biociencias.'
 author:
  name: Dr. José A. Gallardo y Dra. María Angélica Rueda.
  affiliation: Pontificia Universidad Católica de Valparaíso
@@ -76,7 +76,7 @@ La variable respuesta que analizaremos se denomina **TotCopies** y representa a 
 
 ### **Ejercicio 1.** Elaborar y configurar Reporte en formato .Rmd
 
-Elabore un documento .Rmd y configure su reporte para exportar en html. Instale solo las liberías que utilice para el análisis de los datos.
+Elabore un documento .Rmd y configure su reporte para exportar en html. Instale solo los paquetes que utilice para el análisis de los datos.
 
 ```{r setup, include=TRUE, warning=FALSE,message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -87,6 +87,12 @@ library(multcomp)
 library(psych)
 library(car)
 ```
+
+Complete la información de metadatos con: 
+Título: Reporte regresión lineal múltiple.
+Nombre del autor: Su nombre.
+
+Luego guarde inmediatamente su *script* como **script_regresion_lineal_multiple_nombre_apellido.Rmd**. 
 
 Ejecute cada uno de los siguientes ejercicios en uno o más bloques de códigos diferentes. Sea ordenado y documente su reporte adecuadamente.
 
