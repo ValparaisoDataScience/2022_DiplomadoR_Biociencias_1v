@@ -1,0 +1,321 @@
+---
+title: "Clase 18 Introducción a Modelos Lineales Mixtos"
+author: Dr. José Gallardo Matus & Dra. María Angélica Rueda
+institute: Pontificia Universidad Católica de Valparaíso
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: 
+  beamer_presentation:
+    theme: "Malmoe"
+    colortheme: "beaver"
+    fonttheme: "structurebold"
+    includes:
+            in_header: mystyle.tex
+subtitle: 'Diplomado en Análisis de Datos con R e Investigación reproducible para Biociencias.'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(car)
+library(lmtest)
+library(psych)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(knitr)
+library(nlme)
+library(lme4)
+library(lmerTest)
+library(multcomp)
+library(sjPlot)
+library(performance)
+library(caret)
+library(ggeffects) 
+library(glmmTMB)
+```
+
+# **PLAN DE LA CLASE**
+
+**1.- Introducción**
+    
+- Modelos lineales mixtos (MLM).
+
+- Efectos fijos y efectos aleatorios.
+
+- Ecuación del modelo lineal mixto (MLM).
+
+- Interpretación de MLM con R.
+
+
+**2.- Práctica con R y Rstudio cloud**
+
+- Ajustar modelos lineales mixtos.
+
+- Realizar gráficas avanzadas con ggplot2.
+
+- Elaborar un reporte dinámico en formato html.
+
+
+# **MODELOS LINEALES MIXTOS**
+
+Los modelos lineales mixtos (MLM) son una generalización del modelo lineal de regresión clásico, contemplando la posible existencia de observaciones correlacionadas (ej. Medidas repetidas en el mismo individuo) o con variabilidad heterogénea, vinculadas a la presencia de factores aleatorios.
+
+$$Y= X\beta + Zu + \epsilon$$
+Efectos fijos ($X\beta$)
+
+Efectos aleatorios ($Zu + \epsilon$)
+
+Los modelos lineales mixtos surgen cuando no se cumplen los siguientes supuestos:
+
+- Que hayan observaciones correlacionadas.
+
+- Que NO haya homogeneidad de varianzas.
+
+
+# **¿QUÉ SON EFECTOS FIJOS?**
+
+- Los efectos fijos se asumen que son determinados a propósito por el analista de los datos, eso dependerá de las variables a las que se les desea estimar **efectos promedios**.
+
+- Los efectos fijos solo estiman medias de las variables predictoras. 
+
+- En un modelo lineal mixto las variables cuantitativas continuas (*_e.g._*, **Peso**, **Rendimiento**) o factores (*_e.g._*,**Dieta**, **Época de cosecha**) pueden ser usadas como efectos fijos.
+                
+                 
+# **¿QUÉ SON EFECTOS ALEATORIOS?**
+
+- Los efectos aleatorios están asociados a grupos de observaciones.
+Los efectos aleatorios estiman **varianzas**.
+
+- Para considerar una variable predictora cualitativa como un efecto aleatorio del modelo lineal mixto, dicha variable debe tener al menos 5 niveles (**7 Familias**, **8 Bloques**).
+
+- Una variable predictora categórica con dos niveles (binaria) **NO** puede ser un efecto aleatorio.  
+
+- Una variable aleatoria continua **NO** puede ser un efecto aleatorio. 
+
+# **ALGUNOS EJEMPLOS DE EFECTOS ALEATORIOS**
+
+i) Medidas repetidas sobre un mismo individuo (hay repeticiones).
+
+ii) Respuestas observadas en grupos de unidades experimentales homogéneas (bloques), pueden ser piscinas o estanques.
+
+iii) Mediciones de los animales (individuos) de una misma familia.
+
+# **¿CÓMO SE PODRÍA DECIDIR SI ES EFECTO FIJO O ALEATORIO?**
+
+**1).** ¿Cuál es el número de niveles?
+
+- Pequeño (Fijo) (*_e.g._*, **Dieta** con tres niveles **D1, D2** y **D3**).
+
+- Grande o infinito (Posiblemente aleatorio)  (*_e.g._*, **Familia** con 10 niveles **F1, F2**...**F10**).
+
+
+**2).** ¿Son los niveles repetibles?
+
+- Sí (Fijo) (*_e.g._*, **Dieta** podrías aplicarlas en diferentes lugares).
+
+- No (Aleatorio) (*_e.g._*, **Familia** no podrías repetir las familias).
+
+
+**3).** ¿Se necesitan realizar inferencias para niveles no incluidos en el muestreo?
+
+- No (Posiblemente fijo) (*_e.g._*, **Dieta** D4 y D5).
+
+- Sí (Posiblemente aleatorio) (*_e.g._*, **Familias** F11, F12).
+
+# **ESTUDIO DE CASO: ANALISIS DE PRODUCCIÓN Y CALIDAD**
+
+En este estudio de caso trabajaremos con un set de datos de salmón (n=354) publicado en la revista [JOURNAL OF EVOLUTIONARY BIOLOGY](https://onlinelibrary.wiley.com/doi/epdf/10.1111/jeb.13082)
+
+Las variables de estudio se describen a continuación:
+
+| **Variable** | **Descripción** |
+|---|---|
+| **Tank** | Estanque **(58)**|
+| **Days PI** | Días de post-infección |
+| **Nbfemales** | Cantidad de piojos presentes en el pez a la fecha de medición |
+| **Weight** | Peso en la cosecha (g) |
+| **Status** | Estado (Cultivado, Silvestre) |
+
+# **BASE DE DATOS**
+```{r,echo=FALSE}
+datos <- read_excel("UGELVIK_et_al_2017.xlsx")
+datos <- na.omit(datos)
+datos <- datos[,c("Tank","Weight","Nbfemales", "DaysPI", "Status")]
+datos$Tank <- as.factor(datos$Tank)
+datos$Status <- as.factor(datos$Status)
+datos_new <- datos[,c("Weight","Nbfemales", "DaysPI")]
+
+pander::pander(head(datos, caption = "Base de datos",10))
+```
+
+
+# **DISTRIBUCIÓN DE LA VARIABLE RESPUESTA (WEIGHT)**
+
+```{r}
+ggplot(datos, aes(x=Weight))+
+  geom_histogram(color="slateblue4", fill="steelblue1", bins=6)+ labs(x="Weight (g)")+
+  theme_classic()+theme(text = element_text(size=20,face="bold",colour="black"))
+```
+
+# **MODELO LINEAL**
+
+```{r, echo=TRUE}
+lm.datos <- lm(Weight ~ Status+ Nbfemales+ DaysPI, 
+               data = datos)
+```
+
+
+```{r,message=FALSE,warning=FALSE}
+# PARA HACER TABLA CON RESULTADOS DE ML
+#tab_model(lm.datos, show.se = TRUE, show.aic=TRUE)
+```
+
+```{r,echo=FALSE, out.width = '90%',fig.align='center'}
+knitr::include_graphics("ML.png")
+```
+
+# **CUMPLIMIENTO DE SUPUESTOS**
+
+[Robustness of MLM](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13434)
+
+Our simulation analysis shows that the effect of violations of distributional assumptions of random effect variances and residuals is surprisingly small.
+
+**Independencia**
+
+```{r}
+#plot(lm.datos$residuals, pch=20, col = "blue")
+ 
+dwtest(Weight ~ Status+ Nbfemales+ DaysPI, 
+       data = datos,
+       alternative = c("two.sided"), 
+       iterations = 15)
+
+```
+
+# **CUMPLIMIENTO DE SUPUESTOS**
+
+**Homogeneidad de varianzas**
+
+```{r}
+#plot(lm.datos, 1, pch=20, col = "blue")
+bptest(lm.datos)
+```
+
+# **CUMPLIMIENTO DE SUPUESTOS**
+
+**Normalidad**
+
+```{r}
+plot(lm.datos, 2, pch=20, col = "blue")
+```
+
+# **CUMPLIMIENTO DE SUPUESTOS**
+
+**Normalidad**
+
+```{r}
+lm_residuals <- residuals(object = lm.datos)
+shapiro.test(x= lm_residuals)
+```
+# **CUMPLIMIENTO DE SUPUESTOS**
+
+**Multicolinealidad**
+
+```{r, ut.width = '75%', message=FALSE, fig.align='center'}
+pairs.panels(datos_new)
+```
+
+# **CUMPLIMIENTO DE SUPUESTOS**
+
+**Linealidad**
+
+```{r, message=FALSE,warning=FALSE}
+m <- ggplot(datos_new, aes(x = Nbfemales, y = Weight))
+m + geom_point() + xlab("Nbfemales") +  ylab("Weight (g)")+ geom_smooth(method=lm)+theme_classic()+theme(text = element_text(size=20,face="bold",colour="black"))
+```
+
+
+# **CUMPLIMIENTO DE SUPUESTOS**
+
+**Linealidad**
+
+```{r, message=FALSE,warning=FALSE}
+m <- ggplot(datos_new, aes(x = DaysPI, y = Weight))
+m + geom_point() + xlab("DaysPI") +  ylab("Weight (g)")+ geom_smooth(method=lm)+theme_classic()+theme(text = element_text(size=20,face="bold",colour="black"))
+```
+
+
+# **MODELOS LINEALES MIXTOS**
+
+```{r, echo=TRUE}
+library(lme4)
+```
+
+Función **lmer**
+
+
+```{r, echo=FALSE}
+n_tanques <- as.data.frame(length(levels(datos$Tank)))
+colnames(n_tanques) <- c("Cantidad de Tanques")
+```
+
+```{r}
+n_tanques%>% kable(align = "ccc")
+```
+
+* Tanque se puede considerar como efecto **aleatorio**.
+
+# **MODELO LINEAL MIXTO**
+
+```{r,echo=TRUE,fig.align='center'}
+MLM <- lmer(Weight ~ Status+ Nbfemales+ DaysPI + (1|Tank),
+            data = datos)
+```
+
+
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
+# PARA HACER TABLA CON RESULTADOS DE MLM
+#tab_model(MLM,p.val = "kr", show.se = TRUE, show.aic=TRUE)
+```
+
+```{r,echo=FALSE, out.width = '80%',fig.align='center'}
+knitr::include_graphics("MLM.png")
+```
+
+# **$R^2 Marginal$ y $R^2 Condicional$**
+
+* $R^2_{Marginal}$: **proporción de la varianza explicada solo por los efectos fijos**.
+
+* $R^2_{Condicional}$: **proporción de la varianza explicada por todo el modelo**.
+
+```{r, echo=TRUE}
+r2_nakagawa(MLM)
+```
+
+# **SELECCIÓN DE MODELOS (AIC) **
+
+Criterios de selección de modelos AIC
+
+```{r,echo=FALSE,out.width = '30%',fig.align='center'}
+
+AIC_lm.datos<- AIC(lm.datos)
+AIC_MLM <-AIC(MLM)
+AIC <- rbind(AIC_lm.datos,AIC_MLM)
+colnames(AIC) <- c("AIC")
+rownames(AIC) <- c("Modelo lineal", "Modelo lineal mixto")
+
+```
+
+```{r,echo=TRUE,out.width = '30%',fig.align='center'}
+
+AIC %>% kable()
+```
+
+
+# **RESUMEN DE LA CLASE**
+
+**1).** Modelos lineales mixtos.
+
+
+**2).** Construir y ajustar modelos lineales mixtos.
+
+    

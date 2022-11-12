@@ -1,0 +1,409 @@
+---
+title: "Clase 18 - Guía Modelos Lineales Mixtos"
+subtitle: 'Diplomado en Análisis de Datos con R e Investigación reproducible para Biociencias.'
+author:
+ name: Dr. José A. Gallardo y Dra. María Angélica Rueda.
+ affiliation: Pontificia Universidad Católica de Valparaíso
+ email: <jose.gallardo@pucv.cl>
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_folding: hide
+  word_document: default
+  pdf_document: default
+---
+
+<style>
+#TOC {
+  color: black;
+  font-familiy: Calibri;
+  font-size: 14px;
+  border-color: #708090; 
+}
+body {
+   color: black;
+   font-familiy: Calibri;
+}
+
+pre {
+  color: black;
+  background-color: #F8F8FF;
+}
+# header {
+  color: #800000;
+  font-familiy: Calibri;
+  background-color: #F5F5F5;
+  opacity: 0.8;
+  font-size: 16px;
+}
+</style>
+
+### MODELOS LINEALES MIXTOS
+
+Los modelos lineales mixtos (MLM) son una generalización del modelo lineal de regresión clásico, contemplando la posible existencia de observaciones correlacionadas (ej. Medidas repetidas en el mismo individuo) o con variabilidad heterogénea, vinculadas a la presencia de factores aleatorios.
+
+
+**Efecto fijo**: Los efectos fijos solo estiman medias de las variables predictoras. 
+
+**Efecto aleatorio**: Los efectos aleatorios estiman varianzas.
+
+Caracteristicas de un modelo lineal mixto (MLM)
+
+1). El MLM está conformado por efectos fijos y efectos aleatorios.
+
+2). La variable respuesta debe tener ditribución normal.
+
+3). Existencia de observaciones correlacionadas.
+
+4). Puede existir heterogeneidad de varianzas.
+
+Incumplimiento de supuestos (1 y 3):
+
+1) Hay observaciones correlacionadas.
+
+2) Los residuos se distribuyen **normalmente**.
+
+3) No hay homogeneidad de varianzas.
+
+
+#### **Objetivos de aprendizaje**
+
+Los objetivos de aprendizaje de esta guía son:
+
+**1**. - Identificar efectos fijos y efectos aleatorios.
+
+**3**. - Ajustar modelos lineales mixtos. 
+
+**3**. - Realizar gráficas avanzadas con ggplot2. 
+
+**4**. - Elaborar un reporte dinámico en formato pdf con **[Rmarkdown](https://rmarkdown.rstudio.com/)**.
+
+#### EJERCICIOS
+
+### **Ejercicio 1.** Elaborar y configurar Reporte en formato .Rmd
+
+Elabore un documento .Rmd y configure su reporte para exportar en .htlm. Instale solo los paquetes que utilice para el análisis de los datos.
+
+```{r setup, include=TRUE, warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(multcomp)
+library(psych)
+library(car)
+library(nlme)
+library(lme4)
+library(readr)
+library(lmtest)
+library(sjPlot)
+library(agriTutorial)
+library(gridExtra)
+```
+
+Complete la información de metadatos con: 
+Título: Reporte modelo lineal mixto.
+Nombre del autor: Su nombre.
+
+Luego guarde inmediatamente su *script* como **script_modelos_lineales_mixtos_nombre_apellido.Rmd**. 
+
+Ejecute cada uno de los siguientes ejercicios en uno o más bloques de códigos diferentes. Sea ordenado y documente su reporte adecuadamente.
+
+### **Ejercicio 2.** Estudio de caso: Datos de arroz (rice {agriTutorial})
+
+En este estudio de caso trabajaremos con un set de datos de arroz (*rice*) del paquete de R **agriTutorial** (n=135). 
+rice {agriTutorial}. 
+
+Las variables de estudio se describen a continuación: solo se consideraron algunas variables del set de datos para su descripción.
+
+| **Variable**   | **Descripción**                                                    | **Tipo de efecto/ variable**                                     |
+|----------------|--------------------------------------------------------------------|------------------------------------------------------------------|
+| **Management** | Tres prácticas de manejo (minimum, optimum, intensive).            | Efecto Fijo/ Factor de clasificación con 3 niveles.    |
+| **variety**  | 3 Variedades (V1, V2, V3)                                          | Efecto fijo/ Factor de clasificación con 3 niveles.   |
+| **yield**      | Rendimiento (g)                                                    | Variable respuesta/ Cuantitativa continua.                       |
+| **Replicate**  | Replicas                                                           | Factor de clasificación con 3 niveles.                                        |
+| **Main**       | Parcela principal                                                  | Factor de clasificación con 5 niveles.                                     |
+
+Este estudio de caso es un diseño experimental de arroz, donde se considera como variable respuesta la variable **yield**, como efectos fijos del modelo  **management** y **variety** y como efecto aleatorio el efecto anidado de Replicate dentro de Main **Replicate:Main**. Los niveles de la variable Replicate son 3 y de la variable Main son 5; por lo tanto, el efecto anidado **Replicate:Main** tendrá 15 niveles, siendo considerado como efecto aleatorio en el modelo.
+
+
+**a).** Importe el set de datos **data(rice)** del paquete **agriTutorial**. Explore el set de datos usando las funciones **head()**, **str()** y **summary()**.
+
+```{r datos arroz, echo=FALSE}
+data(rice)
+rice <- rice
+head(rice)
+str(rice)
+summary(rice)
+```
+
+**b).** A partir del set de datos de elabore un histograma de la variable respuesta **yield**. Además, realice gráficos de cajas y bigotes para la variable **yield** para el criterios de clasificación **management** y para **variety**. Use la función grid.arrange(plot1, plot2, plot3, ncol=2, nrow =1)
+
+```{r, echo=FALSE}
+plot1 <- rice %>%
+          ggplot(aes(x= yield))+ geom_histogram(color="white", fill="blue", position = "identity", bins = 15)+
+                theme(legend.position="none")+
+                labs(x="Rendimiento (g)",title="Distribución del rendimiento")
+plot2  <- rice %>% ggplot(aes(x=management,y=yield, fill=management))+
+                geom_boxplot()+
+                theme(legend.position="none")+
+                labs(x="Practicas de manejo",y="Rendimento (g)",title="Distribución del rendimiento (g) para cada práctica de manejo")
+plot3 <- rice %>% ggplot(aes(x=variety,y=yield, fill=variety))+
+                geom_boxplot()+
+                theme(legend.position="none")+
+                labs(x="Variedades",y="Rendimento (g)",title="Distribución del rendimiento (g) para cada variedad")
+
+grid.arrange(plot1, plot2, plot3, ncol=3, nrow =1)
+```
+
+**c).** Elabore un gráfico de cajas y bigotes para la variable **yield** y como criterios de clasificación **management** y **variety**. Particione por **Replicate** usando la función **_facet_wrap(~Replicate)_**
+
+```{r, echo=FALSE}
+rice %>% ggplot(aes(x=management,y=yield, fill=variety))+
+                geom_boxplot()+
+                theme(legend.position="right")+
+                labs(x="Practicas de manejo",y="Rendimento (g)")+
+facet_wrap(~Replicate)
+```
+
+
+**d).** Realice el ajuste del siguiente modelo usando la función **lm(yield ~ management * variety, data = rice)**, donde los términos son los siguientes: variable respuesta **yield** y como factores de clasificación **management**, **variety** (use *) para considerar todos los efectos principales y de interacción. Llame al objeto rice.lm. Utilice el símbolo ~ para relacionar la variable respuesta con los factores de clasificación. Realice el summary del modelo ajustado.
+
+Interprete los resultados del modelo ajustado y responda las siguientes preguntas:   
+- ¿Los coeficientes estimados son estadísticamente significativos? 
+- ¿Cuál es la bondad de ajuste del modelo $R^2$ ajustado? 
+
+
+```{r}
+rice.lm <- lm(yield ~ management * variety, data = rice)
+summary(rice.lm)
+```
+
+
+**OTRA FORMA DE VER LOS RESULTADOS DEL SUMMARY CON FORMATO TABLA DE HTML**
+
+```{r, message=FALSE, warning=FALSE}
+# PARA HACER TABLA CON RESULTADOS DEL OBJETO rice.lm
+tab_model(rice.lm, show.se = TRUE, show.aic=TRUE)
+```
+
+
+**e).** Pruebe los supuestos de independencia, homogeneidad de varianzas y normalidad usando pruebas estadísticas y gráficos.
+
+- **_Independencia_**
+
+```{r}
+plot(rice.lm$residuals, pch=20, col = "blue")
+```
+
+```{r, Independencia}
+dwtest(yield ~ management * variety, data = rice,
+       alternative = c("two.sided"), 
+       iterations = 15)
+```
+
+
+- **_Homogeneidad de varianzas_**
+
+```{r}
+plot(rice.lm,1, pch=20, col = "blue")
+```
+
+```{r}
+bptest(rice.lm)
+```
+
+
+- **_Normalidad_**
+
+```{r}
+plot(rice.lm,2, pch=20, col = "blue")
+```
+
+
+```{r}
+lm_residuals <- residuals(object = rice.lm)
+shapiro.test(x= lm_residuals)
+```
+
+¿Se cumplieron todos los supuestos evaluados anteriormente?
+
+
+
+**f).** Realice el ajuste del siguiente modelo lineal mixto usando la función lmer(yield ~ management * variety + (1|Replicate:Main) , data = rice), donde los términos son los siguientes: variable respuesta **yield** y como efectos fijos los factores de clasificación **management**, **variety** (use *) para considerar todos los efectos principales y de interacción. Considere como efecto aleatorio (1|Replicate:Main). Llame al objeto rice.lmer. Utilice el símbolo ~ para relacionar la variable respuesta con los factores de clasificación. Realice el summary del modelo ajustado.
+
+```{r}
+rice.lmer <-  lmer(yield ~ management * variety + (1|Replicate:Main) , data = rice)
+summary(rice.lmer)
+```
+
+
+**OTRA FORMA DE VER LOS RESULTADOS DEL SUMMARY CON FORMATO TABLA DE HTML**
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
+# PARA HACER TABLA CON RESULTADOS DE rice.lmer
+tab_model(rice.lmer,p.val = "kr", show.se = TRUE, show.aic=TRUE)
+```
+
+
+**g).** Realice el plot del modelo ajustado anteriormente usando plot(rice.lmer).
+
+```{r}
+plot(rice.lmer)
+```
+
+¿Qué observa del gráfico? se ve algún patrón o las observaciones son independientes?
+
+
+**h).** Realice el gráfico QQplot y realice la prueba de Shapiro Wilks para ver si la distribución de los residuales del modelo lineal mixto **(del ítem f)** ajustado es normal.
+
+```{r}
+qqnorm(resid(rice.lmer))
+qqline(resid(rice.lmer))
+```
+
+```{r}
+lm_residuals <- residuals(object = rice.lmer)
+shapiro.test(x= lm_residuals)
+```
+
+¿Los residuales se distribuyen normal?
+¿Hubo mejoría al ajustar el modelo lineal mixto?
+
+**i).** Realice la comparación de modelos con las funciones AIC() y BIC().
+
+- ¿Cuál es el mejor modelo?
+
+- ¿Hubo mejoría al incorporar el efecto aleatorio de Replicate:Main?
+
+```{r}
+AIC(rice.lm, rice.lmer)
+BIC(rice.lm, rice.lmer)
+```
+
+```{r}
+# El mejor modelo según los criterios de Akaike y BIC es el modelo lineal mixto; ya que presentan los valores más bajos de AIC y BIC.
+# Al incorporar el efecto aleatorio de Replicate:Main se incremento el R2; ya que el modelo lineal de efectos fijos (que se ajustó con lm) presentó un valor de R2 ajustado de 0.656 y el R2 del modelo lineal mixto es de 0.831. 
+```
+
+
+## ESTUDIO DE CASO: PIOJO EN SALMÓN
+
+En este estudio de caso trabajaremos con un set de datos de salmón (n=354) publicado en la revista [JOURNAL OF EVOLUTIONARY BIOLOGY](https://onlinelibrary.wiley.com/doi/epdf/10.1111/jeb.13082)
+
+La variable respuesta se denomina **Totalareadamage** y las variables predictoras **Status**, **Nbfemales**, **DaysPI** como efectos fijos y **Tank** como efecto aleatorio. La variable Status es cualitativa y Nbfemales, DaysPI son variables cuantiativas discretas.
+
+En este estudio se evaluaron muchos tanques y se desea analizar que el comportamiento de cada tanque es diferente por lo que es necesario considerar el tanque como efecto aleatorio.
+
+### **Ejercicio 3.** Exploratorio set de datos UGELVIK_et_al_2017.xlsx
+
+Importe el set de datos **UGELVIK_et_al_2017.xlsx** y llame al objeto **datos_salmones**. Primero, omita los valores faltantes de la base de datos con la función na.omit(). Segundo, seleccione las variables **Tank**, **Status**, **Nbfemales**, **DaysPI** y **Totalareadamage** de la base de datos datos_salmones. Para finalizar,realice un análisis exploratorio de datos.
+
+**a).** Resumen estadístico de todas las variables.
+
+```{r, warning=FALSE, message=FALSE}
+datos_salmones <- read_excel("UGELVIK_et_al_2017.xlsx")
+datos_salmones <- na.omit(datos_salmones)
+datos_salmones <- datos_salmones[,c("Tank","Status", "Nbfemales", "DaysPI", "Totalareadamage")]
+summary(datos_salmones)
+
+```
+
+**b).** Transforme las variables Tank y Status en factores. Luego, pida el summary() de la base de datos datos_salmones.
+
+```{r, warning=FALSE, message=FALSE}
+datos_salmones$Tank <- as.factor(datos_salmones$Tank)
+datos_salmones$Status <- as.factor(datos_salmones$Status)
+summary(datos_salmones)
+```
+
+**c).** Histograma de la variable respuesta **Totalareadamage**.
+
+```{r, warning=FALSE, message=FALSE}
+
+ggplot(datos_salmones, aes(x=Totalareadamage))+
+  geom_histogram(color="darkblue", fill="lightblue", bins = 8)+theme_classic()+theme(text = element_text(size=20,face="bold",colour="black"))+xlab("Área total de lesiones de piel (mm^2)")
+```
+
+**d).** Transforme la variable respuesta **Totalareadamage** usando la raíz cuadrada, use la función sqrt(Totalareadamage) y agregue esa variable al set de datos_salmones. Llame a esa variable rc_area_damage. Use la función mutate.
+
+```{r}
+datos_salmones <- datos_salmones %>%
+                  mutate(rc_area_damage=sqrt(Totalareadamage))
+```
+
+**e).** Histograma de la variable respuesta transformada **rc_area_damage**.
+
+```{r, warning=FALSE, message=FALSE}
+
+ggplot(datos_salmones, aes(x=rc_area_damage))+
+  geom_histogram(color="blue", fill="lightblue", bins = 8)+theme_classic()+theme(text = element_text(size=20,face="bold",colour="black"))+xlab("Raíz cuadrada del área total de lesiones de piel (mm)")
+```
+
+
+**f).** Realice el exploratorio de los datos
+
+```{r}
+ggplot(data = datos_salmones,aes(x= Status, y = rc_area_damage)) + 
+  geom_boxplot(fill=c("coral", "aquamarine2")) + theme(legend.position = 'right')+ theme_classic()+ylab("Raíz cuadrada del área total de lesiones de piel (mm)")
+```
+
+### **Ejercicio 4.** Modelo de efectos fijos
+
+**a).** Ajuste el siguiente modelo de efectos fijo **lm(rc_area_damage ~ Status+ Nbfemales+ DaysPI, data = datos_salmones)** donde la variable respuesta sea **rc_area_damage** y como efectos fijos del modelo las variables **Status**, **Nbfemales** y **DaysPI**. Use la función **lm(rc_area_damage ~ Status+ Nbfemales+ DaysPI, data = datos_salmones)**. Además, realice el **summary()** del modelo ajustado. 
+
+Interprete los resultados del modelo ajustado y responda las siguientes preguntas:   
+- ¿Los coeficientes estimados son estadísticamente significativos? 
+- ¿Cuál es la bondad de ajuste del modelo $R^2$ ajustado? 
+
+```{r warning=FALSE, message=FALSE}
+
+mod.1 <- lm(rc_area_damage ~ Status+ Nbfemales+ DaysPI, data = datos_salmones)
+
+pander::pander(summary(mod.1), caption = "Modelo de efectos fijos")
+
+```
+
+**OTRA FORMA DE VER LOS RESULTADOS DEL SUMMARY CON FORMATO TABLA DE HTML**
+
+```{r, message=FALSE, warning=FALSE}
+# PARA HACER TABLA CON RESULTADOS DEL OBJETO mod.1
+tab_model(mod.1, show.se = TRUE, show.aic=TRUE)
+```
+
+
+### **Ejercicio 5.** Modelo lineal mixto
+
+**a).** Ajuste el siguiente modelo lineal mixto **lmer(rc_area_damage ~ Status+ Nbfemales+ DaysPI+ (1|Tank), data = datos_salmones)** donde la variable respuesta sea **rc_area_damage**, como efectos fijos del modelo las variables **Status**, **Nbfemales** y **DaysPI** y como efecto aleatorio  tanque (Tank) **1|Tank**. Realice el **summary()** del modelo ajustado. 
+
+```{r}
+mod.2 <- lmer(rc_area_damage ~ Status+ Nbfemales+ DaysPI+ (1|Tank), data = datos_salmones)
+summary(mod.2)
+```
+
+**OTRA FORMA DE VER LOS RESULTADOS DEL SUMMARY CON FORMATO TABLA DE HTML**
+```{r, echo=FALSE, message=FALSE,warning=FALSE}
+# PARA HACER TABLA CON RESULTADOS DE MLM
+tab_model(mod.2,p.val = "kr", show.se = TRUE, show.aic=TRUE)
+```
+
+
+### **Ejercicio 6.** Comparación y selección de modelos
+
+**a).** Realice la comparación de modelos con la función AIC().
+
+- ¿Cuál es el mejor modelo?
+
+- ¿Hubo mejoría al incorporar el efecto aleatorio de Tanque?
+
+```{r}
+AIC(mod.1, mod.2)
+```
+
+```{r}
+# El mejor modelo según el criterio de Akaike es el modelo lineal mixto ya que es el que presenta el valor más bajo de AIC.
+# Al incorporar el efecto aleatorio de Tanque se incremento el R2; ya que el modelo lineal de efectos fijos (que se ajustó con lm) presentó un valor de R2 ajustado de 0.240 y el R2 del modelo lineal mixto es de 0.806. 
+```
+
