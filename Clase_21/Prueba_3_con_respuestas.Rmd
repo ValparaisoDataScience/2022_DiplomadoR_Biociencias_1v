@@ -1,0 +1,171 @@
+---
+title: "Prueba 3"
+author:
+  name: Dr. José A. Gallardo.
+  affiliation: Profesor adjunto de la Pontificia Universidad Católica de Valparaíso
+  email: <jose.gallardo@pucv.cl>
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+subtitle: Métodos de análisis no paramétricos
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(vegan)
+library(psych)
+library(factoextra)
+```
+
+
+**INSTRUCCIONES GENERALES**
+
+1) Elabore un script R usando el programa Rstudio en su versión cloud y guárdelo en su directorio como: Prueba_3_nombre_apellido.R
+
+2) Resuelva los ejercicios propuestos en esta prueba en grupos de 2 o 3 alumnos.
+
+3) Envíe su script al siguiente correo, <jose.gallardo@pucv.cl>, antes del viernes 24 de junio a las 18:00 PM. 
+
+**DESARROLLO DE LA PRUEBA**
+
+Estudio de caso: En la última década numerosos estudios han descrito la ingesta de plástico en animales marinos. Si bien la mayoría de los estudios se dedicaron a comprender los procesos previos a la ingestión, el conocimiento sobre las consecuencias posteriores a la ingestión sigue siendo limitado. [Robson et al. 2020](https://doi.org/10.1016/j.envpol.2020.114918) investigó la acumulación de plástico en tortugas marinas y el impacto que tienen en tortugas marinas en arrecifes de brasil.
+
+
+```{r, echo=FALSE, out.width = '90%' }
+knitr::include_graphics("Contamination_turtle.jpg")
+```
+
+
+A partir del set de datos de [Robson et al. 2020](https://doi.org/10.1016/j.envpol.2020.114918) demuestre si las siguientes hipótesis son verdaderas o falsas y responda las preguntas de cada ejercicio.
+
+**Primera hipótesis:** Alimento consumido por las tortugas en función del contenido de plástico en la dieta.
+
+$H_0$ : El alimento consumido de las tortugas que ingieren plástico no es diferente de las tortugas que no ingieren plástico.  
+$H_1$ : El alimento consumido de las tortugas que ingieren plástico es diferente de las tortugas que no ingieren plástico. 
+
+**Segunda hipótesis:** Composición de la dieta (Chlorophyta, Rhdophyta, Phaeophyceae, Land, Animal) de tortugas que ingieren y no ingieren plástico. 
+
+$H_0$ : La composición de la dieta de tortugas que ingieren plástico en las distintas areas de estudio no es diferente de la composición de la dieta de tortugas que no ingieren plástico.  
+$H_1$ : La composición de la dieta de tortugas que ingieren plástico en las distintas areas de estudio es diferente de la composición de la dieta de tortugas que no ingieren plástico.   
+
+
+**Ejercicio 1.** Hipótesis 1.
+
+a) Importe la hoja 1 del set de datos **plastic.xlsx**. Explore las variables **CCC** (Longitud de la caparazon en cm), **alitot** (alimento consumido en gramos), **lixtot** (cantidad de plástico en la dieta), **plastic** (plástico en la dieta: yes o no). ¿Cuál/es de ellas es/son cuantitativa continua y cuál/es es/son variables de clasificación?. **4 puntos.**
+
+```{r, echo=FALSE}
+datos <- read_excel("plastic.xlsx")
+datos$plastic <- as.factor(datos$plastic)
+datos$loc <- as.factor(datos$loc)
+# summary(datos)
+```
+
+b) Incluya histogramas de las variables cuantitativas continuas y boxplot de las mismas variables en función de la presencia de plástico () **4 puntos.**
+
+```{r}
+
+```
+
+
+c) Realice una prueba no paramétrica de Mann Whitney y evalúe si se rechaza o no la hipótesis nula Nº1. **4 puntos.**
+
+```{r, , echo=FALSE}
+
+```
+
+e) Interprete sus resultados de la prueba estadística haciendo mención al valor de la mediana de cada grupo (plástico: yes o no), a la hipótesis nula H0 y a la probabilidad de que la hipótesis 1 sea verdadera o no. **4 puntos.**
+
+
+**Ejercicio 2.** Hipótesis 2.
+
+a) Importe la hoja 2 del set de datos **plastic.xlsx**. Explore las variables de clasificación **Area**, **plastic** y **Group** (transforme a factor cuando sea necesario). Note que group une Area y plastic en una sola variable con 6 niveles de clasificación. **4 puntos.**
+
+```{r, echo=FALSE}
+datos_2 <- read_excel("plastic.xlsx", sheet = 2)
+datos_2$plastic <- as.factor(datos_2$plastic)
+datos_2$Area <- as.factor(datos_2$Area)
+datos_2$Group <- as.factor(datos_2$Group)
+# summary(datos_2)
+
+```
+
+b) Explore las variables cuantitativas que determinan la composición del alimento (Chlorophyta, Rhdophyta, Phaeophyceae, Land, Animal). Determine, usando la función **pairs.panels()**,  el nivel de correlación entre estas variables. **4 puntos.**
+
+```{r}
+# pairs.panels(datos_2[4:8], method = "spearman")
+```
+
+c) Para las 5 variables analizadas, elabore 5 variables derivadas llamadas Chlorophyta1, Rhdophyta1, Phaeophyceae1, Land1, Animal1 con su *valor estandarizado*. Calcule el valor estandarizado como la diferencia de cada valor por la media **mean()** y dividiendo por la desviación estándar **sd()**. Use la función **mutate()** de la librería **dplyr**.
+
+```{r}
+# Crea nuevas variables
+val_estandarizado <- datos_2 %>%
+ select(Chlorophyta, Rhdophyta, Phaeophyceae, Land, Animal) %>%
+ mutate(
+Chlorophyta1 = (Chlorophyta - mean(Chlorophyta)) / sd(Chlorophyta),
+Rhdophyta1 = (Rhdophyta - mean(Rhdophyta)) / sd(Rhdophyta),
+Phaeophyceae1 = (Phaeophyceae - mean(Phaeophyceae)) / sd(Phaeophyceae),
+Land1 = (Land - mean(Land)) / sd(Land),
+Animal1 = (Animal - mean(Animal)) / sd(Animal))
+```
+
+d) Elabore una nueva gráfica de correlaciones de las variables estandarizadas usando la función **pairs.panels()** y compare con las correlaciones estimadas con las variables originales.
+
+```{r}
+# pairs.panels(val_estandarizado[6:10])
+```
+
+c) Calcule la matriz de distancia euclideana estandarizada. Use la función **dist()**.
+
+```{r}
+dist_euclidea <- dist(val_estandarizado[6:10])
+# class(dist_euclidea)
+# extracto de matriz de distancia
+dist_euclidea <- as.matrix(dist_euclidea)
+# class(dist_euclidea)
+# dist_euclidea[c(1:4),c(1:4)]
+
+```
+
+b) Realice un análisis de componente principales con las variables estandarizadas. **4 puntos.**
+
+```{r}
+plasticpca <- prcomp(val_estandarizado[6:10])
+# plasticpca
+```
+
+c) Obtenga la varianza explicada por cada CP con la función **get_eigenvalue**
+y grafique con la función **fviz_eig**.
+
+```{r}
+# get_eigenvalue(plasticpca)
+# fviz_eig(plasticpca)
+
+```
+
+d) Elabore gráficas para representar la distribución de los 6 grupos **fviz_pca_ind()**
+
+```{r}
+# fviz_pca_ind(plasticpca, 
+#              label = "none", # hide individual labels
+#              habillage = datos_2$Group, # color by groups
+#              palette = c("#00AFBB", "#E7B800", "#FC4E07","#BB3099","#EE0099","#0000AC"),
+#              addEllipses = TRUE, # Concentration ellipses
+#              repel = TRUE) # evita que se solape el nombre de los sitios
+```
+
+
+e) Realice un análisis de Permanova y evalúe si se rechaza o no la hipótesis nula Nº2. Considere como variable respuesta la las variables estandarizadas y como variable predictora los grupos. **4 puntos.**
+
+```{r}
+permanova <- adonis(val_estandarizado[6:10] ~ Group, method = "euclidean", data=datos_2, permutations=999)
+# permanova
+```
+
+f) e) Interprete sus resultados haciendo mención al valor de la mediana de cada grupo (plastico: si o no), a la hipótesis nula H0 y a la probabilidad de que la hipótesis sea verdadera o no. **4 puntos.**
