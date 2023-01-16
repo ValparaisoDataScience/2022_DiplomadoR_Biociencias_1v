@@ -1,8 +1,8 @@
 # -------------------------------------------------------------------------
-# Clase 03 - Simular variables aleatorias discretas
+# Clase 02 - Simular variables aleatorias discretas
 # Dr. José Gallardo y Dra. María Angélica Rueda Calderón
-# 03 septiembre 2022
-# Diplomado R para Biociencias.
+# 12 enero 2022
+# Curso R para Biociencias.
 # -------------------------------------------------------------------------
 
 
@@ -55,6 +55,6 @@ table(parasitos)
 frec <- table(parasitos)
 barplot(frec,col = "coral", main="Distribución de parásitos")
 
-# Investigue y simule variables de se interes con distribución Bernoulli y binomial.
+# Investigue y simule variables de su interes con distribución Bernoulli y binomial.
 # Observe sus variables con table().
 # Observe sus variables con barplot()
