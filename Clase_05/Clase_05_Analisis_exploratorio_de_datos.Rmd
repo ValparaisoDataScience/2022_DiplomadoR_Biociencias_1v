@@ -74,7 +74,7 @@ knitr::include_graphics("EDA.png")
 
 - ¿Qué tipo de variación existe en la/s variables de estudio?  
 
-- ¿Qué tipo de covariación o interacción existe entre las variables de estudio?  
+- ¿Qué tipo de covariación o interacción existe entre las variables de estudio? 
 
 - ¿Cuál es el modelo más simple que explica la relación entre variables?
 
